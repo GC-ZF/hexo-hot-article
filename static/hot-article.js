@@ -35,11 +35,11 @@ fetch(api).then(res => res.json()).then((data) => { //获取博客文章排行
 			</thead>
 			<tbody>
 				<tr>
-					<td>${post_general['timeSpan']}</td>
-					<td>${post_general['sum_visitor_count']}</td>
-					<td>${post_general['sum_pv_count']}</td>
-					<td>${time[0]}时${time[1]}分${time[2]}秒</td>
-					<td>${post_general['sum_average_stay_time']}</td>
+					<td class="score">${post_general['timeSpan']}</td>
+					<td class="score">${post_general['sum_visitor_count']}</td>
+					<td class="score">${post_general['sum_pv_count']}</td>
+					<td class="score">${time[0]}时${time[1]}分${time[2]}秒</td>
+					<td class="score">${post_general['sum_average_stay_time']}</td>
 				</tr>
 			</tbody>
 			`
@@ -60,8 +60,8 @@ fetch(api).then(res => res.json()).then((data) => { //获取博客文章排行
 	for (let i = 0; i < post_info.length; i++) {
 		var tr = document.createElement('tr');
 		tr.innerHTML += `
-						<td>${i+1}</td>
-						<td><a href=${post_info[i]['url']}>${post_info[i]['title']}</a></td>
+						<td class="score">${i+1}</td>
+						<td class="score"><a href=${post_info[i]['url']}>${post_info[i]['title']}</a></td>
 						<td class="score">${post_info[i]['pv_count']}</td>
 						<td class="score">${post_info[i]['visitor_count']}</td>
 						<td class="score">${post_info[i]['average_stay_time']}</td>
@@ -70,10 +70,10 @@ fetch(api).then(res => res.json()).then((data) => { //获取博客文章排行
 	}
 	c.innerHTML = ``
 	table_post.appendChild(tbody);
-	var table_sum_title = document.createElement('h1'); 
-	table_sum_title.innerHTML=`全站统计`
-	var table_post_title = document.createElement('h1'); 
-	table_post_title.innerHTML=`阅读排行`
+	var table_sum_title = document.createElement('h1');
+	table_sum_title.innerHTML = `全站统计`
+	var table_post_title = document.createElement('h1');
+	table_post_title.innerHTML = `阅读排行`
 	c.appendChild(table_sum_title);
 	c.appendChild(table_sum); //第一个表
 	c.appendChild(table_post_title);

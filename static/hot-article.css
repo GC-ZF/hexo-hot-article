@@ -1,0 +1,64 @@
+@charset "utf-8";
+
+body {
+	font-size: 16px;
+	font-family: Verdana, sans-serif;
+}
+
+table {
+	width: 100%;
+	margin: 20px auto;
+	border-collapse: collapse;
+}
+
+th,
+td {
+	/* width: 180px; */
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border: 1px solid #e9eae8;
+	padding: 8px 20px;
+}
+
+tbody tr:nth-child(odd) {
+	background: #f8f8f8;
+}
+
+/* 文章标题栏占比多一些 */
+.sort-table:nth-child(2) {
+	width: 50%;
+}
+
+/* 表格居中 */
+.score {
+	text-align: center;
+}
+
+/* 表头排序 */
+th {
+	cursor: pointer;
+}
+
+th:after {
+	content: '\f0dc';
+	/* ユニコードを使う場合は \ を使う */
+	font-family: FontAwesome;
+	font-size: 12px;
+	color: #ccc;
+	float: right;
+	padding-top: 5px;
+	font-weight: normal;
+}
+
+th.asc:after {
+	content: '\f0de';
+	font-family: FontAwesome;
+	color: #000;
+}
+
+th.desc:after {
+	content: '\f0dd';
+	font-family: FontAwesome;
+	color: #000;
+}
