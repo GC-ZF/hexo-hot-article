@@ -1,4 +1,4 @@
-if (typeof(api) == "undefined" || a == null) {
+if (typeof(api) == "undefined" || api == null) {
 	console.log('未填写api')
 	var api = `https://test.zhangshier.vip/get_hot_post?access_token=${token}&url=${url}`
 } else {
