@@ -5,7 +5,7 @@ if (typeof(api) == "undefined" || api == null) {
 	console.log('已填写api')
 	var api = `${api}get_hot_post?access_token=${token}&url=${url}`
 }
-let c = document.querySelectorAll('#hot_post')[0]
+var c = document.querySelectorAll('#hot_post')[0]
 c.innerHTML = `<p>连接中...</p>`
 // console.log(api)
 fetch(api).then(res => res.json()).then((data) => { //获取博客文章排行
@@ -69,9 +69,15 @@ fetch(api).then(res => res.json()).then((data) => { //获取博客文章排行
 		tbody.appendChild(tr);
 	}
 	c.innerHTML = ``
-	table_post.appendChild(tbody)
-	c.appendChild(table_sum) //第一个表
-	c.appendChild(table_post) //第二个表
+	table_post.appendChild(tbody);
+	var table_sum_title = document.createElement('h1'); 
+	table_sum_title.innerHTML=`全站统计`
+	var table_post_title = document.createElement('h1'); 
+	table_post_title.innerHTML=`阅读排行`
+	c.appendChild(table_sum_title);
+	c.appendChild(table_sum); //第一个表
+	c.appendChild(table_post_title);
+	c.appendChild(table_post); //第二个表
 	sort(); //排序
 });
 
