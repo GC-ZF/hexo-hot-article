@@ -206,8 +206,6 @@ def get_visitor_province(access_token, domain):
     payload.update ( site_info )
     r = requests.post ( 'https://openapi.baidu.com/rest/2.0/tongji/report/getData', params=payload )
     get_data = r.json ()
-    print ( get_data[ 'result' ][ 'items' ][ 0 ] )
-    print ( get_data[ 'result' ][ 'items' ][ 1 ] )
     get_visitor_province = [ ]
     num = len ( get_data[ 'result' ][ 'items' ][ 0 ] )
     for i in range ( 0, num ):
