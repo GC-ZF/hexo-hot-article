@@ -200,18 +200,19 @@ def get_visitor_province(access_token, domain):
     site_info = getSiteList ( access_token, domain )  # 站点基础数据
     payload = {
         'access_token': access_token,
-        'method': 'visit/district/a',
-        "metrics": "pv_count,visitor_count",  # 浏览量 访客数 平均访问时长s
+        'method': 'overview/getDistrictRpt',
+        "metrics": "pv_count",  # 获取pv_count或visitor_count
     }
     payload.update ( site_info )
     r = requests.post ( 'https://openapi.baidu.com/rest/2.0/tongji/report/getData', params=payload )
     get_data = r.json ()
+    print ( get_data[ 'result' ][ 'items' ][ 0 ] )
+    print ( get_data[ 'result' ][ 'items' ][ 1 ] )
     get_visitor_province = [ ]
     num = len ( get_data[ 'result' ][ 'items' ][ 0 ] )
     for i in range ( 0, num ):
         # get_data[ 'result' ][ 'items' ][ 1 ][ i ][ 0 ] # PV
-        # get_data[ 'result' ][ 'items' ][ 1 ][ i ][ 1 ] # UV
-        tmp = {'name': get_data[ 'result' ][ 'items' ][ 0 ][ i ][ 0 ][ 'name' ],
+        tmp = {'name': get_data[ 'result' ][ 'items' ][ 0 ][ i ],
                'value': get_data[ 'result' ][ 'items' ][ 1 ][ i ][ 0 ]}
         get_visitor_province.append ( tmp )
     return get_visitor_province
