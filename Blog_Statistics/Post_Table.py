@@ -239,19 +239,17 @@ def save_excel(post_info):
 
 if __name__ == '__main__':
     start = time.time ()
-    # blog_url = 'https://zhangshier.vip'  # 博客地址
+    blog_url = 'https://zhangshier.vip'  # 博客地址
     # blog_url = 'https://blog.panghai.top'  # 博客地址
     # blog_url = 'https://luomengguo.top'  # 博客地址
-    # blog_url = 'https://tzy1997.com'  # 博客地址
     # blog_url = 'https://blog.leonus.cn'  # 博客地址
     # blog_url = 'https://www.chuckle.top'  # 博客地址
     # blog_url = 'https://anzhiy.cn'  # 博客地址
-    blog_url = 'https://x5x5.site'  # 博客地址
 
     row = 4  # 输出md文件列数
     title_link_time_list = run ( blog_url )  # 异步抓取
     print ( title_link_time_list )
-    save_json ( title_link_time_list )  # 写入json文件
+    # save_json ( title_link_time_list )  # 写入json文件
     # save_md ( row, title_link_time_list )  # 写入md文件
     # save_sql ( title_link_time_list )  # 写入sql文件
     # save_excel ( title_link_time_list )  # 写入excel

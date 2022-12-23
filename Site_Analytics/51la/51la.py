@@ -20,11 +20,11 @@ headers = {
 }
 common_param = {
     # 请在此处填入您的accessKey
-    "accessKey": la51_Parameter.accessKey.vale,
+    "accessKey": la51_Parameter.accessKey,
     # 请在此处填入您的secretKey
-    "secretKey": la51_Parameter.secretKey.vale,
+    "secretKey": la51_Parameter.secretKey,
     # 请在此处填入您的maskId
-    "maskId": la51_Parameter.maskId.vale
+    "maskId": la51_Parameter.maskId
 }
 nonce = random.sample ( string.ascii_letters + string.digits, 4 )
 timestamp = int ( time.time ()*1000 )

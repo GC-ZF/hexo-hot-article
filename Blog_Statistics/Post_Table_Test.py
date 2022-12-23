@@ -60,7 +60,7 @@ for i in range ( page_num ):
         r = requests.get ( url )
         r = r.content.decode ( 'utf-8' )
         html = etree.HTML ( r )
-        post_num = html.xpath ( '//*[@class="recent-post-info"]' )   # 当前页的文章数
+        post_num = html.xpath ( '//*[@class="recent-post-info"]' )  # 当前页的文章数
         post_num = len ( post_num )
         for i in range ( post_num ):
             title = html.xpath ( '//*[@class="recent-post-info"]/a/@title' )[ i ]
@@ -84,4 +84,4 @@ with open ( 'Post_Table.md', 'w', encoding='utf-8' ) as f:
             f.write ( '| \n' )
             tmp = 0
 
-print(time.time()-start)
+print ( time.time () - start )

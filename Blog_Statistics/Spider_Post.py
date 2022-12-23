@@ -16,7 +16,7 @@ import datetime
 '''
 需求分析：通过给定链接获取页面html并转为markdown保存
 遇到问题：当蝴蝶主题开启懒加载，img标签中src不等于实际地址
-三种思路，经测试方案三用时最短
+三种思路，经测试方案三用时最短，主要浏览器加载请求资源太多了，这个不可控
 '''
 
 
@@ -42,7 +42,7 @@ def by_selenium_value(link):
     :return:
     '''
     # 1、创建浏览器对象 - 打开浏览器
-    driver = webdriver.Chrome () # 本地调试打开浏览器窗口
+    driver = webdriver.Chrome ()  # 本地调试打开浏览器窗口
     driver.maximize_window ()
     # driver = webdriver.Chrome ( options=add_options () )  # 不开启浏览器的情况下调试
     # 2、打开博文
@@ -66,7 +66,7 @@ def by_selenium_value(link):
                                           '<tbody><tr><td class="code">' )  # 主题配置代码不换行情况匹配规则 code_word_wrap: true
     # 去除 .gutter
     tmp = driver.find_elements ( By.CSS_SELECTOR, '.gutter' )
-    code_span = [ ] # 找出所有的.gutter标签
+    code_span = [ ]  # 找出所有的.gutter标签
     for i in tmp:
         code_span.append ( i.get_attribute ( 'outerHTML' ) )
     for i in code_span:
@@ -137,32 +137,37 @@ def by_parsel_replace(link):
     :param link: 文章链接
     :return:
     '''
+    # 1、爬取html代码
     request = requests.get ( link )
     html = request.content.decode ( 'utf-8' )
     select = parsel.Selector ( html )
 
+    # 2、获取文章标题和内容
     post_title = select.css ( '.post-title::text' ).get ()
     post_content = select.css ( '.post-content' ).get ()
 
+    # 3、处理懒加载图片
     post_content = post_content.replace ( 'src', 'lazy' ).replace ( 'data-lazy-lazy', 'src' )  # 处理图片
-    # print ( post_content )
+
+    # 4、处理多余的标签
     # 蝴蝶主题代码框用table绘制分为行号（.gutter）和代码区域（.code） table标签转md会生成 '---'，解决： 用replace去除table，遍历去除<td class="gutter">xxx</td>
     # 去<table>
     post_content = post_content.replace ( '<table><tr><td class="gutter">',
                                           '<tr><td class="gutter">' )  # 主题配置代码不换行情况匹配规则 code_word_wrap: false
     post_content = post_content.replace ( '<table><tr><td class="code">',
                                           '<tr><td class="code">' )  # 主题配置代码不换行情况匹配规则 code_word_wrap: true
-    # 去行号
+
+    # 去行号 当蝴蝶主题使用代码框换行时，代码框是单独的一个td标签，用replace处理掉
     code_span = select.css ( '.gutter' ).getall ()
     for i in code_span:
         post_content = post_content.replace ( i, '' )
 
-    # 转md
+    # 5、转md
     markdown = html2text.html2text ( post_content )
     # with open ( f'by_parsel_replace/{post_title}.md', 'w', encoding='utf-8' ) as file:
     #     file.writelines ( markdown )
 
-    # 去代码框前多余的换行
+    # 6、去代码框前多余的换行
     markdown = markdown.split ( '\n' )
     file_content = [ ]
     for i in range ( len ( markdown ) ):
@@ -170,7 +175,7 @@ def by_parsel_replace(link):
             continue
         else:
             file_content.append ( markdown[ i ] + '\n' )
-    # 保存文件
+    # 7、保存文件
     # path = os.path.dirname ( __file__ )
     # path = path + '/by_parsel_replace'
     # if not os.path.exists ( path ):
@@ -254,10 +259,10 @@ if __name__ == '__main__':
     # by_selenium_scroll ( url )
     # print ( time.time () - start )
 
-    print ( 'by_parsel_replace运行时长：' )
-    start = time.time ()
-    by_parsel_replace ( url )
-    print ( time.time () - start )
+    # print ( 'by_parsel_replace运行时长：' )
+    # start = time.time ()
+    # by_parsel_replace ( url )
+    # print ( time.time () - start )
 
     # url = 'https://blog.csdn.net/qq_49488584/article/details/126884686?spm=1001.2014.3001.5502'
     # print ( 'csdn爬取运行时长：' )

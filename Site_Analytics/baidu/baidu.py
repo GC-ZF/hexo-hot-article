@@ -63,7 +63,7 @@ def baidu_refresh_token(API_Key, Secret_Key, refresh_token):
     通过 refresh_token 刷新
     :param API_Key: 百度账号API_Key
     :param Secret_Key: 百度账号Secret_Key
-    :param refresh_token:
+    :param refresh_token: 百度账号refresh_token
     :return: {'access_token': access_token, 'refresh_token': refresh_token}
     '''
     payload = {'grant_type': 'refresh_token',
@@ -93,12 +93,12 @@ def getSiteList(access_token, domain):
     '''
     payload = {'access_token': access_token}
     r = requests.post ( 'https://openapi.baidu.com/rest/2.0/tongji/config/getSiteList', params=payload )
-    getData = r.json ()
+    get_data = r.json ()
     # 多个站点会返回多个 域名 和 id
     # 成功示例：{'list': [{'site_id': 17960579, 'domain': 'zhangshier.vip', 'status': 0, 'create_time': '2022-05-12 15:20:32', 'sub_dir_list': []}]}
     # 失败示例：{'error_code': 110, 'error_msg': 'Access token invalid or no longer valid'}
     # 利用 dic 对站点提取必要的 payload
-    getData = getData[ 'list' ]
+    getData = get_data[ 'list' ]
     now = datetime.datetime.now ().date ()
     now = datetime.datetime.strftime ( now, '%Y%m%d' )  # 纯字符串格式
     site_info = {}  # 定义一个字典，作为 post 请求的 payload
@@ -112,7 +112,7 @@ def getSiteList(access_token, domain):
     return site_info
 
 
-def get_hot_post(access_token, domain):
+def get_hot_article(access_token, domain):
     '''
     获取热文统计
     :param access_token: 百度分析access_token
@@ -130,9 +130,9 @@ def get_hot_post(access_token, domain):
     get_site_data = r.json ()
 
     # 对 get_site_data 二次处理，去除主页、友链朋友圈、关于等信息，只保留 post 文章页信息
-    # 并构造一个字典 get_post_data 包括 概览信息post_general 每篇文章信息post_info
+    # 并构造一个字典 get_hot_article 包括 概览信息blog_general 每篇文章信息article_info
     # 文章概览信息
-    post_general = {"timeSpan": get_site_data[ 'result' ][ 'timeSpan' ][ 0 ],  # 统计时间区间 eg：2022/05/12 - 2022/11/17
+    blog_general = {"timeSpan": get_site_data[ 'result' ][ 'timeSpan' ][ 0 ],  # 统计时间区间 eg：2022/05/12 - 2022/11/17
                     "total": get_site_data[ 'result' ][ 'total' ],  # 百度统计控制台-受访页面中URL个数 但只有前20篇具体数据，需要购买商业版统计
                     "sum_pv_count": get_site_data[ 'result' ][ 'sum' ][ 0 ][ 0 ],  # 总浏览量 PV
                     "sum_visitor_count": get_site_data[ 'result' ][ 'sum' ][ 0 ][ 1 ],  # 总访客数 UV
@@ -156,7 +156,7 @@ def get_hot_post(access_token, domain):
     post_num = len ( get_site_data[ 'result' ][ 'items' ][ 0 ] )  # 去除处理后更新
 
     # 单篇文章信息 百度统计没title：利用 xpath 爬取博客获取文章标题
-    post_info = [ ]
+    article_info = [ ]
     for i in range ( 0, post_num ):
         tmp = {"title": get_title ( get_site_data[ 'result' ][ 'items' ][ 0 ][ i ][ 0 ][ 'name' ] ),
                "url": get_site_data[ 'result' ][ 'items' ][ 0 ][ i ][ 0 ][ 'name' ],  # 文章链接
@@ -164,17 +164,17 @@ def get_hot_post(access_token, domain):
                "visitor_count": get_site_data[ 'result' ][ 'items' ][ 1 ][ i ][ 1 ],  # 访客数UV
                "average_stay_time": get_site_data[ 'result' ][ 'items' ][ 1 ][ i ][ 2 ]  # 平均停留时长
                }
-        post_info.append ( tmp )
+        article_info.append ( tmp )
 
     # 构造新字典并return
-    get_post_data = {"post_general": post_general, "post_info": post_info}
+    get_hot_article = {"blog_general": blog_general, "article_info": article_info}
 
     # pwd = os.getcwd ()
     # father_path_method1 = os.path.dirname ( pwd )
     # file_path = father_path_method1 + "\\baidu.json"
     # with open ( file_path, 'w', encoding='utf-8' ) as f:
     #     json.dump ( get_post_data, f, indent=4, ensure_ascii=False )
-    return get_post_data
+    return get_hot_article
 
 
 def get_title(url):
@@ -195,7 +195,7 @@ def get_visitor_province(access_token, domain):
     访客省份统计
     :param access_token: 百度分析access_token
     :param domain: 站点域名
-    :return:
+    :return: 省份UV
     '''
     site_info = getSiteList ( access_token, domain )  # 站点基础数据
     payload = {
@@ -205,7 +205,15 @@ def get_visitor_province(access_token, domain):
     }
     payload.update ( site_info )
     r = requests.post ( 'https://openapi.baidu.com/rest/2.0/tongji/report/getData', params=payload )
-    get_visitor_province = r.json ()
+    get_data = r.json ()
+    get_visitor_province = [ ]
+    num = len ( get_data[ 'result' ][ 'items' ][ 0 ] )
+    for i in range ( 0, num ):
+        # get_data[ 'result' ][ 'items' ][ 1 ][ i ][ 1 ] # PV
+        # get_data[ 'result' ][ 'items' ][ 1 ][ i ][ 0 ] # UV
+        tmp = {'name': get_data[ 'result' ][ 'items' ][ 0 ][ i ][ 0 ][ 'name' ],
+               'value': get_data[ 'result' ][ 'items' ][ 1 ][ i ][ 0 ]}
+        get_visitor_province.append ( tmp )
     return get_visitor_province
 
 
@@ -214,7 +222,7 @@ def get_visitor_counrty(access_token, domain):
     访客国家统计
     :param access_token: 百度分析access_token
     :param domain: 站点域名
-    :return:
+    :return: 国家UV
     '''
     site_info = getSiteList ( access_token, domain )  # 站点基础数据
     payload = {
@@ -224,7 +232,16 @@ def get_visitor_counrty(access_token, domain):
     }
     payload.update ( site_info )
     r = requests.post ( 'https://openapi.baidu.com/rest/2.0/tongji/report/getData', params=payload )
-    get_visitor_country = r.json ()
+    get_data = r.json ()
+    get_visitor_country = [ ]
+    num = len ( get_data[ 'result' ][ 'items' ][ 0 ] )
+    for i in range ( 0, num ):
+        # get_data[ 'result' ][ 'items' ][ 0 ] # 国家
+        # get_data[ 'result' ][ 'items' ][ 1 ][ i ][ 0 ] # PV
+        # get_data[ 'result' ][ 'items' ][ 1 ][ i ][ 1 ] # UV
+        tmp = {'name': get_data[ 'result' ][ 'items' ][ 0 ][ i ][ 0 ][ 'name' ],
+               'value': get_data[ 'result' ][ 'items' ][ 1 ][ i ][ 0 ]}
+        get_visitor_country.append ( tmp )
     return get_visitor_country
 
 
@@ -232,13 +249,13 @@ if __name__ == '__main__':
     API_Key = ''
     Secret_Key = ''
     CODE = ''
-
+    refresh_token = ''
     # 测试
-    # baidu_get_token ( API_Key, Secret_Key, CODE )
-    # baidu_refresh_token ( API_Key, Secret_Key, refresh_token )
+    # print ( baidu_get_token ( API_Key, Secret_Key, CODE ) )
+    # print ( baidu_refresh_token ( API_Key, Secret_Key, refresh_token ) )
 
-    access_token = ''
-    domain = ''
-    print ( get_hot_post ( access_token, domain ) )
+    # access_token = '121.5adfb69624da2392ca4abd47cf0d8b28.YBuYxKJbmZJR4OvxOs9I7m7emw6hzG_JqWWarV5.TtLa7Q'
+    # domain = 'zhangshier.vip'
+    # print ( get_hot_article ( access_token, domain ) )
     # print ( get_visitor_province ( access_token, domain ) )
     # print ( get_visitor_counrty ( access_token, domain ) )
