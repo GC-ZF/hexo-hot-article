@@ -40,7 +40,7 @@ async def favicon():
     :return:
     '''
     path = os.path.dirname ( os.path.dirname ( os.path.realpath ( __file__ ) ) )
-    favicon_path = path + '\\static\\ico.jpg'
+    favicon_path = path + '/static/ico.jpg'
     return FileResponse ( favicon_path )
 
 
