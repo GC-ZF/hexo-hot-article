@@ -107,7 +107,7 @@ async def get_hot_articles(access_token: str, url: str):
     return get_hot_article ( access_token, url )
 
 
-@app.get ( "/visitor_province/" )
+@app.get ( "/get_visitor_province/" )
 async def get_visitor_provinces(access_token: str, url: str):
     '''
     获取访客省份统计
