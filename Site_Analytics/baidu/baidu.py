@@ -254,7 +254,7 @@ if __name__ == '__main__':
     # print ( baidu_get_token ( API_Key, Secret_Key, CODE ) )
     # print ( baidu_refresh_token ( API_Key, Secret_Key, refresh_token ) )
 
-    # access_token = '121.5adfb69624da2392ca4abd47cf0d8b28.YBuYxKJbmZJR4OvxOs9I7m7emw6hzG_JqWWarV5.TtLa7Q'
+    # access_token = ''
     # domain = 'zhangshier.vip'
     # print ( get_hot_article ( access_token, domain ) )
     # print ( get_visitor_province ( access_token, domain ) )
