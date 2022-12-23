@@ -210,7 +210,7 @@ def get_visitor_province(access_token, domain):
     num = len ( get_data[ 'result' ][ 'items' ][ 0 ] )
     for i in range ( 0, num ):
         # get_data[ 'result' ][ 'items' ][ 1 ][ i ][ 0 ] # PV
-        tmp = {'name': get_data[ 'result' ][ 'items' ][ 0 ][ i ],
+        tmp = {'name': get_data[ 'result' ][ 'items' ][ 0 ][ i ][ 0 ],
                'value': get_data[ 'result' ][ 'items' ][ 1 ][ i ][ 0 ]}
         get_visitor_province.append ( tmp )
     return get_visitor_province
