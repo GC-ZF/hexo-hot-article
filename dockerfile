@@ -1,4 +1,4 @@
-FROM centos-py:latest
+FROM python:3.8.10
 MAINTAINER zhsher
 EXPOSE 8000
 WORKDIR /home/hexo-hot-article/
