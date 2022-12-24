@@ -34,8 +34,8 @@ def save_img(url):
     # print ( path )
 
     # 截图
-    driver = webdriver.Chrome ( options=add_options () )
-    # driver = webdriver.Chrome ( options=add_options (),executable_path='/var/task/Blog_Statistics/chromedriver' )
+    # driver = webdriver.Chrome ( options=add_options () )
+    driver = webdriver.Chrome ( options=add_options (),executable_path='static/chromedriver' )
     driver.maximize_window ()
     driver.set_page_load_timeout ( 10 )  # 设置超时时间，selenium执行策略是待页面加载完成才执行操作
     try:
