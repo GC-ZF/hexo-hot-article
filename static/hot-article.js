@@ -11,8 +11,8 @@ function hotarticle() {
 		table_article.id = 'hot-article'
 
 		var sencond = blog_general['sum_average_stay_time'] * blog_general['sum_visitor_count']
-		let time = getTime(sencond)
 
+		let time = getTime(sencond)
 		// 第一个表
 		table_general.innerHTML = `
 				<thead>
@@ -29,7 +29,7 @@ function hotarticle() {
 						<td class="score">${blog_general['timeSpan']}</td>
 						<td class="score">${blog_general['sum_visitor_count']}</td>
 						<td class="score">${blog_general['sum_pv_count']}</td>
-						<td class="score">${time[0]}时${time[1]}分${time[2]}秒</td>
+						<td class="score">${time[0]}天${time[1]}时${time[2]}分${time[3]}秒</td>
 						<td class="score">${blog_general['sum_average_stay_time']}</td>
 					</tr>
 				</tbody>
@@ -151,7 +151,8 @@ function chinamap() {
 
 // 转换时间
 function getTime(time) {
-	// 转换为式分秒
+	// 转换为天时分秒
+	let d = parseInt(time / 60 / 60 / 24)
 	let h = parseInt(time / 60 / 60 % 24)
 	h = h < 10 ? '0' + h : h
 	let m = parseInt(time / 60 % 60)
@@ -159,7 +160,7 @@ function getTime(time) {
 	let s = parseInt(time % 60)
 	s = s < 10 ? '0' + s : s
 	// 作为返回值返回
-	return [h, m, s]
+	return [d, h, m, s]
 }
 
 // 自定义背景颜色
