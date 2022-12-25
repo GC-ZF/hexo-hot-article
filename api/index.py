@@ -18,7 +18,7 @@ from Blog_Statistics.Post_Table import run_api
 from Site_Analytics.baidu.baidu import baidu_get_token, baidu_refresh_token, get_hot_article, \
     get_visitor_province, get_visitor_counrty
 from Blog_Statistics.Spider_Post import by_parsel_replace, csdn
-from Blog_Statistics.Screen_Shot import save_img
+# from Blog_Statistics.Screen_Shot import save_img
 
 app = FastAPI ()
 

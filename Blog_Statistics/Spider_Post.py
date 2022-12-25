@@ -7,9 +7,6 @@ import html2text
 import requests
 import parsel
 import time
-from selenium import webdriver
-from selenium.webdriver import ActionChains
-from selenium.webdriver.common.by import By
 from multiprocessing import Pool
 import datetime
 
@@ -18,117 +15,119 @@ import datetime
 遇到问题：当蝴蝶主题开启懒加载，img标签中src不等于实际地址
 三种思路，经测试方案三用时最短，主要浏览器加载请求资源太多了，这个不可控
 '''
-
-
-def add_options():
-    # 创建谷歌浏览器驱动参数对象
-    chrome_options = webdriver.ChromeOptions ()
-    # 不加载图片
-    prefs = {"profile.managed_default_content_settings.images": 2}
-    chrome_options.add_experimental_option ( "prefs", prefs )
-    # 使用无界面浏览器模式！！
-    chrome_options.add_argument ( '--headless' )
-    # 使用隐身模式（无痕模式）
-    chrome_options.add_argument ( '--incognito' )
-    # 禁用GPU加速
-    chrome_options.add_argument ( '--disable-gpu' )
-    return chrome_options
-
-
-def by_selenium_value(link):
-    '''
-    方案一：利用selenium库，img标签外包裹了a标签，a标签中有img的实际地址，通过dom操作将a.src给img.href
-    :param link: 文章链接
-    :return:
-    '''
-    # 1、创建浏览器对象 - 打开浏览器
-    driver = webdriver.Chrome ()  # 本地调试打开浏览器窗口
-    driver.maximize_window ()
-    # driver = webdriver.Chrome ( options=add_options () )  # 不开启浏览器的情况下调试
-    # 2、打开博文
-    driver.get ( link )
-    # 3、找到所有a、img标签
-    a_list = driver.find_elements ( By.XPATH, '//*[@id="article-container"]/p/a/img/..' )
-    # 4、替换所有的img.href=a.src
-    for i in range ( len ( a_list ) ):
-        a_href = a_list[ i ].get_attribute ( 'href' )
-        js = f"document.querySelectorAll('.post-content p img')[{i}].src = '{a_href}'"
-        driver.execute_script ( js )
-    # 5、获取文章内容部分的HTML
-    post_content = driver.find_element ( By.XPATH, '//*[@id="article-container"]' ).get_attribute ( 'outerHTML' )
-    post_title = driver.find_element ( By.CSS_SELECTOR, '.post-title' ).get_attribute ( 'innerHTML' )
-
-    # 6、二次处理
-    # 蝴蝶主题代码框用table绘制分为行号（.gutter）和代码区域（.code） table标签转md会生成 '---'，解决： 用replace去除table，遍历去除<td class="gutter">xxx</td>
-    post_content = post_content.replace ( '<table><tbody><tr><td class="gutter">',
-                                          '<tbody><tr><td class="gutter">' )  # 主题配置代码不换行情况匹配规则 code_word_wrap: false
-    post_content = post_content.replace ( '<table><tbody><tr><td class="code">',
-                                          '<tbody><tr><td class="code">' )  # 主题配置代码不换行情况匹配规则 code_word_wrap: true
-    # 去除 .gutter
-    tmp = driver.find_elements ( By.CSS_SELECTOR, '.gutter' )
-    code_span = [ ]  # 找出所有的.gutter标签
-    for i in tmp:
-        code_span.append ( i.get_attribute ( 'outerHTML' ) )
-    for i in code_span:
-        post_content = post_content.replace ( i, '' )
-
-    # 7、保存markdown
-    # markdown = html2text.html2text ( post_content )
-    #
-    # path = os.path.dirname ( __file__ )
-    # path = path + '/by_selenium_value'
-    # if not os.path.exists ( path ):
-    #     os.mkdir ( path )
-    #
-    # with open ( f'{path}/{post_title}.md', 'w', encoding='utf-8' ) as file:
-    #     file.write ( markdown )
-
-
-def by_selenium_scroll(link):
-    '''
-    方案二：利用selenium库，img标签外包裹了a标签，找到所有的img的上一级a，滚动到a让图片加载（直接找图片会造成滚动坐标越界）
-    :param link: 文章链接
-    :return:
-    '''
-    # 1、创建浏览器对象 - 打开浏览器
-    driver = webdriver.Chrome ()  # 本地调试打开浏览器窗口
-    driver.maximize_window ()
-    # driver = webdriver.Chrome ( options=add_options () )  # 不开启浏览器的情况下调试
-    # 2、打开博文
-    driver.get ( link )
-    # 3、找到所有图片外包裹的a
-    img_list = driver.find_elements ( By.XPATH, '//*[@id="article-container"]/p/a/img/..' )
-    # img_list = driver.find_elements ( By.CSS_SELECTOR, '#article-container p a' )
-    # 4、滚动到图片位置
-    for img in img_list:
-        ActionChains ( driver ).scroll_to_element ( img ).perform ()
-    # 5、获取文章内容部分的HTML
-    post_content = driver.find_element ( By.XPATH, '//*[@id="article-container"]' ).get_attribute ( 'outerHTML' )
-    post_title = driver.find_element ( By.CSS_SELECTOR, '.post-title' ).get_attribute ( 'innerHTML' )
-
-    # 6、二次处理
-    # 蝴蝶主题代码框用table绘制分为行号（.gutter）和代码区域（.code） table标签转md会生成 '---'，解决： 用replace去除table，遍历去除<td class="gutter">xxx</td>
-    post_content = post_content.replace ( '<table><tbody><tr><td class="gutter">',
-                                          '<tbody><tr><td class="gutter">' )  # 主题配置代码不换行情况匹配规则 code_word_wrap: false
-    post_content = post_content.replace ( '<table><tbody><tr><td class="code">',
-                                          '<tbody><tr><td class="code">' )  # 主题配置代码不换行情况匹配规则 code_word_wrap: true
-    # 去除 .gutter
-    tmp = driver.find_elements ( By.CSS_SELECTOR, '.gutter' )
-    code_span = [ ]  # 找出所有的.gutter标签
-    for i in tmp:
-        code_span.append ( i.get_attribute ( 'outerHTML' ) )
-    for i in code_span:
-        post_content = post_content.replace ( i, '' )
-
-    # 7、保存markdown
-    # markdown = html2text.html2text ( post_content )
-    # path = os.path.dirname ( __file__ )
-    # path = path + '/by_selenium_scroll'
-    # if not os.path.exists ( path ):
-    #     os.mkdir ( path )
-    #
-    # with open ( f'{path}/{post_title}.md', 'w', encoding='utf-8' ) as file:
-    #     file.write ( markdown )
+# 因为vercel不支持selenium，此文件selenium部分全部注释
+# from selenium import webdriver
+# from selenium.webdriver import ActionChains
+# from selenium.webdriver.common.by import By
+# def add_options():
+#     # 创建谷歌浏览器驱动参数对象
+#     chrome_options = webdriver.ChromeOptions ()
+#     # 不加载图片
+#     prefs = {"profile.managed_default_content_settings.images": 2}
+#     chrome_options.add_experimental_option ( "prefs", prefs )
+#     # 使用无界面浏览器模式！！
+#     chrome_options.add_argument ( '--headless' )
+#     # 使用隐身模式（无痕模式）
+#     chrome_options.add_argument ( '--incognito' )
+#     # 禁用GPU加速
+#     chrome_options.add_argument ( '--disable-gpu' )
+#     return chrome_options
+#
+#
+# def by_selenium_value(link):
+#     '''
+#     方案一：利用selenium库，img标签外包裹了a标签，a标签中有img的实际地址，通过dom操作将a.src给img.href
+#     :param link: 文章链接
+#     :return:
+#     '''
+#     # 1、创建浏览器对象 - 打开浏览器
+#     driver = webdriver.Chrome ()  # 本地调试打开浏览器窗口
+#     driver.maximize_window ()
+#     # driver = webdriver.Chrome ( options=add_options () )  # 不开启浏览器的情况下调试
+#     # 2、打开博文
+#     driver.get ( link )
+#     # 3、找到所有a、img标签
+#     a_list = driver.find_elements ( By.XPATH, '//*[@id="article-container"]/p/a/img/..' )
+#     # 4、替换所有的img.href=a.src
+#     for i in range ( len ( a_list ) ):
+#         a_href = a_list[ i ].get_attribute ( 'href' )
+#         js = f"document.querySelectorAll('.post-content p img')[{i}].src = '{a_href}'"
+#         driver.execute_script ( js )
+#     # 5、获取文章内容部分的HTML
+#     post_content = driver.find_element ( By.XPATH, '//*[@id="article-container"]' ).get_attribute ( 'outerHTML' )
+#     post_title = driver.find_element ( By.CSS_SELECTOR, '.post-title' ).get_attribute ( 'innerHTML' )
+#
+#     # 6、二次处理
+#     # 蝴蝶主题代码框用table绘制分为行号（.gutter）和代码区域（.code） table标签转md会生成 '---'，解决： 用replace去除table，遍历去除<td class="gutter">xxx</td>
+#     post_content = post_content.replace ( '<table><tbody><tr><td class="gutter">',
+#                                           '<tbody><tr><td class="gutter">' )  # 主题配置代码不换行情况匹配规则 code_word_wrap: false
+#     post_content = post_content.replace ( '<table><tbody><tr><td class="code">',
+#                                           '<tbody><tr><td class="code">' )  # 主题配置代码不换行情况匹配规则 code_word_wrap: true
+#     # 去除 .gutter
+#     tmp = driver.find_elements ( By.CSS_SELECTOR, '.gutter' )
+#     code_span = [ ]  # 找出所有的.gutter标签
+#     for i in tmp:
+#         code_span.append ( i.get_attribute ( 'outerHTML' ) )
+#     for i in code_span:
+#         post_content = post_content.replace ( i, '' )
+#
+#     # 7、保存markdown
+#     # markdown = html2text.html2text ( post_content )
+#     #
+#     # path = os.path.dirname ( __file__ )
+#     # path = path + '/by_selenium_value'
+#     # if not os.path.exists ( path ):
+#     #     os.mkdir ( path )
+#     #
+#     # with open ( f'{path}/{post_title}.md', 'w', encoding='utf-8' ) as file:
+#     #     file.write ( markdown )
+#
+#
+# def by_selenium_scroll(link):
+#     '''
+#     方案二：利用selenium库，img标签外包裹了a标签，找到所有的img的上一级a，滚动到a让图片加载（直接找图片会造成滚动坐标越界）
+#     :param link: 文章链接
+#     :return:
+#     '''
+#     # 1、创建浏览器对象 - 打开浏览器
+#     driver = webdriver.Chrome ()  # 本地调试打开浏览器窗口
+#     driver.maximize_window ()
+#     # driver = webdriver.Chrome ( options=add_options () )  # 不开启浏览器的情况下调试
+#     # 2、打开博文
+#     driver.get ( link )
+#     # 3、找到所有图片外包裹的a
+#     img_list = driver.find_elements ( By.XPATH, '//*[@id="article-container"]/p/a/img/..' )
+#     # img_list = driver.find_elements ( By.CSS_SELECTOR, '#article-container p a' )
+#     # 4、滚动到图片位置
+#     for img in img_list:
+#         ActionChains ( driver ).scroll_to_element ( img ).perform ()
+#     # 5、获取文章内容部分的HTML
+#     post_content = driver.find_element ( By.XPATH, '//*[@id="article-container"]' ).get_attribute ( 'outerHTML' )
+#     post_title = driver.find_element ( By.CSS_SELECTOR, '.post-title' ).get_attribute ( 'innerHTML' )
+#
+#     # 6、二次处理
+#     # 蝴蝶主题代码框用table绘制分为行号（.gutter）和代码区域（.code） table标签转md会生成 '---'，解决： 用replace去除table，遍历去除<td class="gutter">xxx</td>
+#     post_content = post_content.replace ( '<table><tbody><tr><td class="gutter">',
+#                                           '<tbody><tr><td class="gutter">' )  # 主题配置代码不换行情况匹配规则 code_word_wrap: false
+#     post_content = post_content.replace ( '<table><tbody><tr><td class="code">',
+#                                           '<tbody><tr><td class="code">' )  # 主题配置代码不换行情况匹配规则 code_word_wrap: true
+#     # 去除 .gutter
+#     tmp = driver.find_elements ( By.CSS_SELECTOR, '.gutter' )
+#     code_span = [ ]  # 找出所有的.gutter标签
+#     for i in tmp:
+#         code_span.append ( i.get_attribute ( 'outerHTML' ) )
+#     for i in code_span:
+#         post_content = post_content.replace ( i, '' )
+#
+#     # 7、保存markdown
+#     # markdown = html2text.html2text ( post_content )
+#     # path = os.path.dirname ( __file__ )
+#     # path = path + '/by_selenium_scroll'
+#     # if not os.path.exists ( path ):
+#     #     os.mkdir ( path )
+#     #
+#     # with open ( f'{path}/{post_title}.md', 'w', encoding='utf-8' ) as file:
+#     #     file.write ( markdown )
 
 
 def by_parsel_replace(link):
