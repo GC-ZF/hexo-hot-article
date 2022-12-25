@@ -5,16 +5,20 @@
 @Blog:zhangshier.vip
 """
 import os
+import sys
 
 import uvicorn
 from fastapi import FastAPI
-from Blog_Statistics.Post_Table import run_api
 from fastapi.responses import HTMLResponse
-from Blog_Statistics.Spider_Post import by_parsel_replace, csdn
-from Blog_Statistics.Screen_Shot import save_img
 from fastapi.responses import FileResponse
+
+BASE_DIR = os.path.dirname ( os.path.dirname ( os.path.abspath ( __file__ ) ) )
+sys.path.append ( BASE_DIR )
+from Blog_Statistics.Post_Table import run_api
 from Site_Analytics.baidu.baidu import baidu_get_token, baidu_refresh_token, get_hot_article, \
     get_visitor_province, get_visitor_counrty
+from Blog_Statistics.Spider_Post import by_parsel_replace, csdn
+from Blog_Statistics.Screen_Shot import save_img
 
 app = FastAPI ()
 
@@ -129,19 +133,19 @@ async def get_visitor_counrtys(access_token: str, url: str):
     return get_visitor_counrty ( access_token, url )
 
 
-@app.get ( "/screen", response_class=HTMLResponse, tags=[ "截图" ], summary="截取站点封面" )
-async def screen(url: str = '站点网址'):
-    '''
-    获取网址截图
-    - url: 网址
-    - return: img
-    '''
-    if 'http' not in url[ 0:4 ]:
-        url = 'https://' + url
-    print ( '网址为' + url )
-    base64 = save_img ( url )
-    html = f'<img src="data:image/png;base64,{base64}" />'
-    return html
+# @app.get ( "/screen", response_class=HTMLResponse, tags=[ "截图" ], summary="截取站点封面" )
+# async def screen(url: str = '站点网址'):
+#     '''
+#     获取网址截图
+#     - url: 网址
+#     - return: img
+#     '''
+#     if 'http' not in url[ 0:4 ]:
+#         url = 'https://' + url
+#     print ( '网址为' + url )
+#     base64 = save_img ( url )
+#     html = f'<img src="data:image/png;base64,{base64}" />'
+#     return html
 
 
 @app.get ( "/csdn", response_class=HTMLResponse, tags=[ "CSDN" ], summary="获取CSDN单篇文章信息" )
