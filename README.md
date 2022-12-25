@@ -13,8 +13,6 @@
   </a>
 </p></br>
 
-# hexo-hot-article 实时文章排行及访客地图
-
 ## 前言
 
 灵感来源于[@二花 阅读排行](https://thiscute.world/statistics/)
@@ -25,6 +23,11 @@
 * 51la相对于百度，有文章题目，接口只有6个，比百度目的性强，Json数据清晰。但是请求体需要`accesskey、nonce、secretkey、时间戳`利用SHA256HEX生成 sign（签名），之后将五个参数作为请求体再去请求，十分麻烦。致命的是接口调用次数100/月，想要开通企业版，加客服根本不鸟我，一定要使用可以利用Github工作流实现，但是这样不能保证实时数据
 
 综合考虑，使用百度统计实现文章排行及访客地图。效果：[阅读排行](https://zhangshier.vip/hot-article)
+
+<div align="center">
+  <img height="300px" src="https://cdn.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article06.png">
+  <img height="300px" src="https://cdn.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article07.png">
+</div>
 
 ## 开通百度统计数据API
 
@@ -67,7 +70,7 @@ hexo new page hot-article
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4.9.0/map/js/china.js"></script>
 ```
 
-hexo三连通过**『http://localhost:4000/hot-article』**访问
+hexo三连通过 **『http://localhost:4000/hot-article』** 访问
 
 ## 自建API（可选）
 
@@ -81,11 +84,11 @@ hexo三连通过**『http://localhost:4000/hot-article』**访问
 
 ![hexo-hot-article 实时文章排行及访客地图02](https://cdn.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article02.png)
 
-部署成功后，你会看到**『部署成功，请按照仓库说明使用』**
+部署成功后，你会看到 **『部署成功，请按照仓库说明使用』**
 
 ![hexo-hot-article 实时文章排行及访客地图03](https://cdn.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article03.png)
 
-上图中右侧的免费域名是被墙的，推荐在**『setting->domains』**中绑定一个自己的域名
+上图中右侧的免费域名是被墙的，推荐在 **『setting->domains』** 中绑定一个自己的域名
 
 ![hexo-hot-article 实时文章排行及访客地图04](https://cdn.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article04.png)
 
@@ -97,13 +100,13 @@ hexo三连通过**『http://localhost:4000/hot-article』**访问
 docker run -itd --name=hexo-hot-article --restart=always -v /home/ubuntu/hexo-hot-article:/app/data -p 9135:8000 zhshier/hexo-hot-article
 ```
 
-测试：返回 **『部署成功，请按照仓库说明使用』**则部署成功
+测试：返回 **『部署成功，请按照仓库说明使用』** 则部署成功
 
 ```
 curl http://127.0.0.1:9135
 ```
 
-在服务器面板中打开9135端口外网即可通过**『ip:9135』**访问
+在服务器面板中打开9135端口外网即可通过 **『ip:9135』** 访问
 
 ## 计划
 
