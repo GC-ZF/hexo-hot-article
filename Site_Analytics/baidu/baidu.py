@@ -186,7 +186,12 @@ def get_title(url):
     r = requests.get ( url )
     r = r.content.decode ( 'utf-8' )
     html = etree.HTML ( r )
-    title = html.xpath ( '//*[@id="post-info"]/h1//text()' )[ 0 ]
+    try:
+        title = html.xpath ( '//*[@id="post-info"]/h1//text()' )[ 0 ]
+    except Exception as e:
+        e = str ( e )
+        print ( e + '：您使用的是Hugo主题' )
+        title = html.xpath ( '//article/h1//text()' )[ 0 ]
     return title
 
 
