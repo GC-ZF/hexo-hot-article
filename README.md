@@ -35,6 +35,12 @@
 
 ![hexo-hot-article 实时文章排行及访客地图05](https://cdn.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article05.png)
 
+百度统计可以获取20条高访问页面数据，为了保证数据的有效性，我在代码中过滤掉了`localhost:4000`以及`tag`、`categories`等页面。为了获取更多的有效数据，可以预先设置不统计`localhost`
+
+**使用设置->规则设置->过滤规则设置**
+
+![hexo-hot-article 实时文章排行及访客地图08](https://cdn.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article08.png)
+
 在百度统计首页中的数据管理，获取`API Key`、`Secrect Key`
 
 访问并登录`http://openapi.baidu.com/oauth/2.0/authorize?response_type=code&client_id={CLIENT_ID}&redirect_uri=oob&scope=basic&display=popup`，获取code，其中`{CLIENT_ID}`替换为`API Key`
