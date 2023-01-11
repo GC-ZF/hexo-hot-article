@@ -25,27 +25,28 @@
 综合考虑，使用百度统计实现文章排行及访客地图。效果：[阅读排行](https://zhangshier.vip/hot-article)
 
 <div align="center">
-  <img height="300px" src="https://cdn.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article06.png">
-  <img height="300px" src="https://cdn.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article07.png">
+  <img height="300px" src="https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article06.png">
+  <img height="300px" src="https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article07.png">
 </div>
+
 
 ## 开通百度统计数据API
 
 参照[Butterfly 安裝文檔(四) 主題配置-2 | Butterfly](https://butterfly.js.org/posts/ceeb73f/#分析統計)，安装注册百度统计服务
 
-![hexo-hot-article 实时文章排行及访客地图05](https://cdn.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article05.png)
+![hexo-hot-article 实时文章排行及访客地图05](https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article05.png)
 
 百度统计可以获取20条高访问页面数据，为了保证数据的有效性，我在代码中过滤掉了`localhost:4000`以及`tag`、`categories`等页面。为了获取更多的有效数据，可以预先设置不统计`localhost`
 
 **使用设置->规则设置->过滤规则设置**
 
-![hexo-hot-article 实时文章排行及访客地图08](https://cdn.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article08.png)
+![hexo-hot-article 实时文章排行及访客地图08](https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article08.png)
 
 在百度统计首页中的数据管理，获取`API Key`、`Secrect Key`
 
 访问并登录`http://openapi.baidu.com/oauth/2.0/authorize?response_type=code&client_id={CLIENT_ID}&redirect_uri=oob&scope=basic&display=popup`，获取code，其中`{CLIENT_ID}`替换为`API Key`
 
-![hexo-hot-article 实时文章排行及访客地图01](https://cdn.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article01.png)
+![hexo-hot-article 实时文章排行及访客地图01](https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article01.png)
 
 访问`http://openapi.baidu.com/oauth/2.0/token?grant_type=authorization_code&code={你的CODE}&client_id={你的API Key}&client_secret={你的Secrect Key}&redirect_uri=oob`，获取token
 
@@ -88,15 +89,15 @@ hexo三连通过 **『http://localhost:4000/hot-article』** 访问
 
 点击此处[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-https://github.com/GC-ZF/hexo-hot-article)跳转，对此仓库命名并创建
 
-![hexo-hot-article 实时文章排行及访客地图02](https://cdn.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article02.png)
+![hexo-hot-article 实时文章排行及访客地图02](https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article02.png)
 
 部署成功后，你会看到 **『部署成功，请按照仓库说明使用』**
 
-![hexo-hot-article 实时文章排行及访客地图03](https://cdn.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article03.png)
+![hexo-hot-article 实时文章排行及访客地图03](https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article03.png)
 
 上图中右侧的免费域名是被墙的，推荐在 **『setting->domains』** 中绑定一个自己的域名
 
-![hexo-hot-article 实时文章排行及访客地图04](https://cdn.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article04.png)
+![hexo-hot-article 实时文章排行及访客地图04](https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article04.png)
 
 ### Docker一键部署
 
