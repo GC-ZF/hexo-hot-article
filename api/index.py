@@ -8,7 +8,7 @@ import os
 import sys
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.responses import FileResponse
 
@@ -18,6 +18,9 @@ from Blog_Statistics.Post_Table import run_api
 from Site_Analytics.baidu.baidu import baidu_get_token, baidu_refresh_token, get_hot_article, \
     get_visitor_province, get_visitor_counrty
 from Blog_Statistics.Spider_Post import by_parsel_replace, csdn
+from Fork_Repo.github_calendar_api import get_calendar
+from Fork_Repo.weibo_api import get_weibo
+
 # from Blog_Statistics.Screen_Shot import save_img
 
 app = FastAPI ()
@@ -160,6 +163,26 @@ async def spider_csdn(url: str = 'CSDN文章地址'):
     print ( '网址为' + url )
     html = csdn ( url )
     return html
+
+
+@app.get ( "/github_calendar", tags=[ "自用转载" ], summary="获取Github贡献信息,url/github_calendar?name" )
+async def get_calendars(request: Request):
+    '''
+    获取Github贡献信息
+    - name: Github用户名
+    - return: Github Json数据
+    '''
+    name = str ( request.url ).split ( '?' )[ 1 ]
+    return get_calendar ( name )
+
+
+@app.get ( "/weibo", tags=[ "自用转载" ], summary="获取微博热搜" )
+async def get_calendars():
+    '''
+    获取微博热搜
+    - return: 微博 Json数据
+    '''
+    return get_weibo ()
 
 
 if __name__ == '__main__':

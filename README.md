@@ -120,6 +120,15 @@ curl http://127.0.0.1:9135
 未来可能添加的功能（先画大饼嘻嘻，应该也发现了最近小张发文频率不高，因为实在是事情太多，近几个月尽量每月一篇吧！）
 
 - [ ] 添加51la、谷歌分析（51la得Github Actions很头痛，数据不能实时更新）
+
 - [ ] 文章发布时间柱状统计图
+
+- [x] 避免重复造轮子部署，自用整合微博、贡献日历
+
+  [Eurkon/weibo-top-api: 使用python爬取微博热搜](https://github.com/Eurkon/weibo-top-api)
+
+  [Zfour/python_github_calendar_api: 用python获取github上的用户贡献信息，部署于vercel的api](https://github.com/Zfour/python_github_calendar_api/)
+
+感谢[@Eurkon](https://github.com/Eurkon)、[@Zfour](https://github.com/Zfour)
 
 如果你有好的点子，多多pr啊🤩
