@@ -1,9 +1,3 @@
-"""
-@Author:张时贰
-@Date:2022年12月16日
-@CSDN:张时贰
-@Blog:zhangshier.vip
-"""
 import json
 import sqlite3
 
@@ -150,7 +144,7 @@ def save_sql(post_info):
 
     # 插入文章数据
     # sql.execute (
-    #     "INSERT INTO Blog_Post VALUES( '2022 11 13 月亮还是那个月亮','https://zhangshier.vip/posts/53805/','2022-11-13 00:10:24')" )
+    #     "INSERT INTO Blog_Post VALUES( '2022 11 13 月亮还是那个月亮','https://zhsher.cn/posts/53805/','2022-11-13 00:10:24')" )
     sql.executemany ( 'INSERT INTO Blog_Post(title,link,time) VALUES(  ?, ?, ?)', link_title_set )
 
     connect.commit ()
@@ -169,7 +163,7 @@ def get_json(blog_url):
 
 if __name__ == '__main__':
     start = time.time ()
-    # blog_url = 'https://zhangshier.vip'  # 博客地址
+    # blog_url = 'https://zhsher.cn'  # 博客地址
     # blog_url = 'https://blog.panghai.top'  # 博客地址
     blog_url = 'https://luomengguo.top'  # 博客地址
     # blog_url = 'https://tzy1997.com'  # 博客地址

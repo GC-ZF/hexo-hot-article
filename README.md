@@ -22,7 +22,7 @@
 * 百度好请求，但是没文章题目，需要借助爬虫曲爬取，接口太多且有的不能用，好的接口得付费（不过可以自己手撕计算时间/排序文章热度），且token只有一个月的有效期，需要手动填写新的！受访页面统计是以UV从高到低的前20条数据问题不算大，显示一部分文章就可以了，额外数据需要开通企业版
 * 51la相对于百度，有文章题目，接口只有6个，比百度目的性强，Json数据清晰。但是请求体需要`accesskey、nonce、secretkey、时间戳`利用SHA256HEX生成 sign（签名），之后将五个参数作为请求体再去请求，十分麻烦。致命的是接口调用次数100/月，想要开通企业版，加客服根本不鸟我，一定要使用可以利用Github工作流实现，但是这样不能保证实时数据
 
-综合考虑，使用百度统计实现文章排行及访客地图。效果：[阅读排行](https://zhangshier.vip/hot-article)
+综合考虑，使用百度统计实现文章排行及访客地图。效果：[阅读排行](https://zhsher.cn/hot-article)
 
 <div align="center">
   <img height="300px" src="https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article06.png">
@@ -65,8 +65,8 @@ hexo new page hot-article
 <div id='hexo-china-map' style="height: 500px;"></div>
 <script>
     var token = '' //百度统计token
-    var url = 'zhangshier.vip'	//站点地址
-    var api = ''  //hexo-hot-article api 自建或者用我的 https://hexo-hot-article.zhangshier.vip/
+    var url = 'zhsher.cn'	//站点地址
+    var api = ''  //hexo-hot-article api 自建或者用我的 https://hexo-hot-article.zhsher.cn/
     var background = ''  //文章表格鼠标悬停背景色，默认爷爷红
 </script>
 <link rel="stylesheet" type="text/css"
@@ -81,7 +81,7 @@ hexo三连通过 **『http://localhost:4000/hot-article』** 访问
 
 ## 自建API（可选）
 
-接口文档：[hexo-hot-article docs](https://hexo-hot-article.zhangshier.vip/docs)，其中包括获取及刷新百度token的接口、文章发布时间统计接口等
+接口文档：[hexo-hot-article docs](https://hexo-hot-article.zhsher.cn/docs)，其中包括获取及刷新百度token的接口、文章发布时间统计接口等
 
 ### Vercel一键部署
 

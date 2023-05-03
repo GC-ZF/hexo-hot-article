@@ -1,9 +1,3 @@
-"""
-@Author:张时贰
-@Date:2022年11月16日
-@CSDN:张时贰
-@Blog:zhangshier.vip
-"""
 import datetime
 import json
 import os
@@ -95,7 +89,7 @@ def getSiteList(access_token, domain):
     r = requests.post ( 'https://openapi.baidu.com/rest/2.0/tongji/config/getSiteList', params=payload )
     get_data = r.json ()
     # 多个站点会返回多个 域名 和 id
-    # 成功示例：{'list': [{'site_id': 17960579, 'domain': 'zhangshier.vip', 'status': 0, 'create_time': '2022-05-12 15:20:32', 'sub_dir_list': []}]}
+    # 成功示例：{'list': [{'site_id': 17960579, 'domain': 'zhsher.cn', 'status': 0, 'create_time': '2022-05-12 15:20:32', 'sub_dir_list': []}]}
     # 失败示例：{'error_code': 110, 'error_msg': 'Access token invalid or no longer valid'}
     # 利用 dic 对站点提取必要的 payload
     getData = get_data[ 'list' ]
@@ -259,7 +253,7 @@ if __name__ == '__main__':
     # print ( baidu_refresh_token ( API_Key, Secret_Key, refresh_token ) )
 
     # access_token = ''
-    # domain = 'zhangshier.vip'
+    # domain = 'zhsher.cn'
     # print ( get_hot_article ( access_token, domain ) )
     # print ( get_visitor_province ( access_token, domain ) )
     # print ( get_visitor_counrty ( access_token, domain ) )

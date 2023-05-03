@@ -230,8 +230,8 @@ function sort() {
 
 // 判断是否有接口
 if (typeof(api) == "undefined" || api == null || api == '') {
-	var article_api = `https://hexo-hot-article.zhangshier.vip/get_hot_article?access_token=${token}&url=${url}`
-	var chinamap_api = `https://hexo-hot-article.zhangshier.vip/get_visitor_province?access_token=${token}&url=${url}`
+	var article_api = `https://hexo-hot-article.zhsher.cn/get_hot_article?access_token=${token}&url=${url}`
+	var chinamap_api = `https://hexo-hot-article.zhsher.cn/get_visitor_province?access_token=${token}&url=${url}`
 } else {
 	var article_api = `${api}get_hot_article?access_token=${token}&url=${url}`
 	var chinamap_api = `${api}get_visitor_province?access_token=${token}&url=${url}`

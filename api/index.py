@@ -1,9 +1,3 @@
-"""
-@Author:张时贰
-@Date:2022年12月21日
-@CSDN:张时贰
-@Blog:zhangshier.vip
-"""
 import os
 import sys
 

@@ -1,9 +1,3 @@
-"""
-@Author:张时贰
-@Date:2022年12月20日
-@CSDN:张时贰
-@Blog:zhangshier.vip
-"""
 import json
 import time
 import requests

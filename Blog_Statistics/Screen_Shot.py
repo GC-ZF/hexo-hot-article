@@ -50,5 +50,5 @@
 #
 #
 # if __name__ == '__main__':
-#     url = "https://zhangshier.vip/"
+#     url = "https://zhsher.cn/"
 #     save_img ( url )

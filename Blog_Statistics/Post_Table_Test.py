@@ -1,15 +1,9 @@
-"""
-@Author:张时贰
-@Date:2022年12月15日
-@CSDN:张时贰
-@Blog:zhangshier.vip
-"""
 import time
 import requests
 from lxml import etree
 
 start = time.time ()
-blog_url = 'https://zhangshier.vip'  # 博客地址
+blog_url = 'https://zhsher.cn'  # 博客地址
 # blog_url = 'https://blog.panghai.top'  # 博客地址
 # blog_url = 'https://luomengguo.top'  # 博客地址
 # blog_url = 'https://tzy1997.com'  # 博客地址

@@ -245,8 +245,8 @@ def csdn(link):
 
 
 if __name__ == '__main__':
-    url = 'https://zhangshier.vip/posts/7884/'
-    # url = 'https://zhangshier.vip/posts/53805/'
+    url = 'https://zhsher.cn/posts/7884/'
+    # url = 'https://zhsher.cn/posts/53805/'
 
     # print ( 'by_selenium_value运行时长：' )
     # start = time.time ()
@@ -269,9 +269,9 @@ if __name__ == '__main__':
     # csdn ( url )
     # print ( time.time () - start )
 
-    # url=[('https://zhangshier.vip/posts/7339/',),
-    #      ('https://zhangshier.vip/posts/53805/',),
-    #      ('https://zhangshier.vip/posts/26324/',)]
+    # url=[('https://zhsher.cn/posts/7339/',),
+    #      ('https://zhsher.cn/posts/53805/',),
+    #      ('https://zhsher.cn/posts/26324/',)]
     #
     # start = time.time ()
     # thread1 = threading.Thread ( name='t1', target=by_selenium_value, args=url[0] )
@@ -288,9 +288,9 @@ if __name__ == '__main__':
     #
     # start = time.time ()
     # po=Pool(3)
-    # url = [ 'https://zhangshier.vip/posts/7339/',
-    #         'https://zhangshier.vip/posts/53805/',
-    #         'https://zhangshier.vip/posts/26324/' ]
+    # url = [ 'https://zhsher.cn/posts/7339/',
+    #         'https://zhsher.cn/posts/53805/',
+    #         'https://zhsher.cn/posts/26324/' ]
     # po.map( by_selenium_value, url )
     # po.close ()  # 关闭进程池，不再接受新的进程
     # po.join ()  # 主进程阻塞等待子进程的退出
