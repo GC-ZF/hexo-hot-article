@@ -71,10 +71,10 @@ hexo new page hot-article
 </script>
 <link rel="stylesheet" type="text/css"
     href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hot-article.min.css">
-<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4.9.0/map/js/china.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hot-article.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn1.tianli0.top/gh/GC-ZF/hexo-hot-article/static/hot-article.min.css">
+<script src="https://npm.elemecdn.com/echarts@5.4.1/dist/echarts.js"></script>
+<script type="text/javascript" src="https://npm.elemecdn.com/echarts@4.9.0/map/js/china.js"></script>
+<script type="text/javascript" src="https://cdn1.tianli0.top/gh/GC-ZF/hexo-hot-article/static/hot-article.min.js"></script>
 ```
 
 hexo三连通过 **『http://localhost:4000/hot-article』** 访问
