@@ -152,13 +152,14 @@ def get_hot_article(access_token, domain):
     # 单篇文章信息 百度统计没title：利用 xpath 爬取博客获取文章标题
     article_info = [ ]
     for i in range ( 0, post_num ):
-        tmp = {"title": get_title ( get_site_data[ 'result' ][ 'items' ][ 0 ][ i ][ 0 ][ 'name' ] ),
-               "url": get_site_data[ 'result' ][ 'items' ][ 0 ][ i ][ 0 ][ 'name' ],  # 文章链接
-               "pv_count": get_site_data[ 'result' ][ 'items' ][ 1 ][ i ][ 0 ],  # 浏览量PV
-               "visitor_count": get_site_data[ 'result' ][ 'items' ][ 1 ][ i ][ 1 ],  # 访客数UV
-               "average_stay_time": get_site_data[ 'result' ][ 'items' ][ 1 ][ i ][ 2 ]  # 平均停留时长
-               }
-        article_info.append ( tmp )
+        if(get_title ( get_site_data[ 'result' ][ 'items' ][ 0 ][ i ][ 0 ][ 'name' ])):
+            tmp = {"title": get_title ( get_site_data[ 'result' ][ 'items' ][ 0 ][ i ][ 0 ][ 'name' ] ),
+                   "url": get_site_data[ 'result' ][ 'items' ][ 0 ][ i ][ 0 ][ 'name' ],  # 文章链接
+                   "pv_count": get_site_data[ 'result' ][ 'items' ][ 1 ][ i ][ 0 ],  # 浏览量PV
+                   "visitor_count": get_site_data[ 'result' ][ 'items' ][ 1 ][ i ][ 1 ],  # 访客数UV
+                   "average_stay_time": get_site_data[ 'result' ][ 'items' ][ 1 ][ i ][ 2 ]  # 平均停留时长
+                   }
+            article_info.append ( tmp )
 
     # 构造新字典并return
     get_hot_article = {"blog_general": blog_general, "article_info": article_info}
@@ -178,15 +179,19 @@ def get_title(url):
     :return: 文章标题
     '''
     r = requests.get ( url )
-    r = r.content.decode ( 'utf-8' )
-    html = etree.HTML ( r )
-    try:
-        title = html.xpath ( '//*[@id="post-info"]/h1//text()' )[ 0 ]
-    except Exception as e:
-        e = str ( e )
-        print ( e + '：您使用的是Hugo主题' )
-        title = html.xpath ( '//article/h1//text()' )[ 0 ]
-    return title
+    # 有的文章删了但是访客数据还在，先判断一下
+    if r.status_code!=404:
+        r = r.content.decode ( 'utf-8' )
+        html = etree.HTML ( r )
+        try:
+            title = html.xpath ( '//*[@id="post-info"]/h1//text()' )[ 0 ]
+        except Exception as e:
+            e = str ( e )
+            print ( e + '：您使用的是Hugo主题' )
+            title = html.xpath ( '//article/h1//text()' )[ 0 ]
+        return title
+    else:
+        return None
 
 
 def get_visitor_province(access_token, domain):
