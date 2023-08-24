@@ -25,27 +25,27 @@
 综合考虑，使用百度统计实现文章排行及访客地图。效果：[阅读排行](https://zhsher.cn/hot-article)
 
 <div align="center">
-  <img height="300px" src="https://testingcf.jsdelivr.net/gh/GC-ZF/test/static/hexo-hot-article01.png">
-  <img height="300px" src="https://testingcf.jsdelivr.net/gh/GC-ZF/test/static/hexo-hot-article02.png">
+  <img height="300px" src="https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article01.png">
+  <img height="300px" src="https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article02.png">
 </div>
 
 ## 开通百度统计数据API
 
 参照[Butterfly 安裝文檔(四) 主題配置-2 | Butterfly](https://butterfly.js.org/posts/ceeb73f/#分析統計)，安装注册百度统计服务
 
-![hexo-hot-article 实时文章排行及访客地图03](https://testingcf.jsdelivr.net/gh/GC-ZF/test/static/hexo-hot-article03.png)
+![hexo-hot-article 实时文章排行及访客地图03](https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article03.png)
 
 百度统计可以获取20条高访问页面数据，为了保证数据的有效性，我在代码中过滤掉了`localhost:4000`以及`tag`、`categories`等页面。为了获取更多的有效数据，可以预先设置不统计`localhost`
 
 **使用设置->规则设置->过滤规则设置**
 
-![hexo-hot-article 实时文章排行及访客地图04](https://testingcf.jsdelivr.net/gh/GC-ZF/test/static/hexo-hot-article04.png)
+![hexo-hot-article 实时文章排行及访客地图04](https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article04.png)
 
 在百度统计首页中的数据管理，获取`API Key`、`Secrect Key`
 
 访问并登录`http://openapi.baidu.com/oauth/2.0/authorize?response_type=code&client_id={CLIENT_ID}&redirect_uri=oob&scope=basic&display=popup`，获取code，其中`{CLIENT_ID}`替换为`API Key`
 
-![hexo-hot-article 实时文章排行及访客地图05](https://testingcf.jsdelivr.net/gh/GC-ZF/test/static/hexo-hot-article05.png)
+![hexo-hot-article 实时文章排行及访客地图05](https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article05.png)
 
 访问`http://openapi.baidu.com/oauth/2.0/token?grant_type=authorization_code&code={你的CODE}&client_id={你的API Key}&client_secret={你的Secrect Key}&redirect_uri=oob`，获取token
 
@@ -94,17 +94,17 @@ hexo三连通过 **『http://localhost:4000/hot-article』** 访问
 
 新建结构化数据，创建 Class，填写名称为 `BaiduToken`，设置默认 ACL read 和 write 权限都为所有用户；
 
-![hexo-hot-article 实时文章排行及访客地图06](https://testingcf.jsdelivr.net/gh/GC-ZF/test/static/hexo-hot-article06.png)
+![hexo-hot-article 实时文章排行及访客地图06](https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article06.png)
 
 点击添加列，分别新增 `accessToken` 和 `refreshToken`；
 
-![hexo-hot-article 实时文章排行及访客地图07](https://testingcf.jsdelivr.net/gh/GC-ZF/test/static/hexo-hot-article07.png)
+![hexo-hot-article 实时文章排行及访客地图07](https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article07.png)
 
 点击新增行，填写百度统计获取到的 `access_token` 和 `refresh_token`；
 
 点击**设置-->应用凭证**获取连接LeanCloud的`APPID`与`APPKey`
 
-![hexo-hot-article 实时文章排行及访客地图08](https://testingcf.jsdelivr.net/gh/GC-ZF/test/static/hexo-hot-article08.png)
+![hexo-hot-article 实时文章排行及访客地图08](https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article08.png)
 
 ### Github部署
 
@@ -115,25 +115,25 @@ fork [GC-ZF/hexo-hot-article](https://github.com/GC-ZF/hexo-hot-article) 项目�
 - `APPID`：LeanCloud AppID
 - `APPKEY`：LeanCloud AppKey
 
-![hexo-hot-article 实时文章排行及访客地图09](https://testingcf.jsdelivr.net/gh/GC-ZF/test/static/hexo-hot-article09.png)
+![hexo-hot-article 实时文章排行及访客地图09](https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article09.png)
 
 点击`Backup twikoo-->Enable workflow`启用工作流，然后点击`Run workflow`手动运行测试能否运行并更新leancloud中的token
 
-![hexo-hot-article 实时文章排行及访客地图10](https://testingcf.jsdelivr.net/gh/GC-ZF/test/static/hexo-hot-article10.png)
+![hexo-hot-article 实时文章排行及访客地图10](https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article10.png)
 
 ### Vercel一键部署
 
 将自己fork的项目导入Vercel并设置环境变量
 
-![hexo-hot-article 实时文章排行及访客地图11](https://testingcf.jsdelivr.net/gh/GC-ZF/test/static/hexo-hot-article11.png)
+![hexo-hot-article 实时文章排行及访客地图11](https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article11.png)
 
 部署成功后，你会看到 **『部署成功，请按照仓库说明使用』**
 
-![hexo-hot-article 实时文章排行及访客地图12](https://testingcf.jsdelivr.net/gh/GC-ZF/test/static/hexo-hot-article12.png)
+![hexo-hot-article 实时文章排行及访客地图12](https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article12.png)
 
 上图中右侧的免费域名是被墙的，推荐在 **『setting->domains』** 中绑定一个自己的域名
 
-![hexo-hot-article 实时文章排行及访客地图13](https://testingcf.jsdelivr.net/gh/GC-ZF/test/static/hexo-hot-article13.png)
+![hexo-hot-article 实时文章排行及访客地图13](https://testingcf.jsdelivr.net/gh/GC-ZF/hexo-hot-article/static/hexo-hot-article13.png)
 
 ### Docker一键部署
 
