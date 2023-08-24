@@ -8,3 +8,4 @@ html2text==2020.1.16
 fastapi==0.88.0
 uvicorn==0.20.0
 utils==1.0.1
+leancloud==2.9.11

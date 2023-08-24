@@ -5,12 +5,14 @@ import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 BASE_DIR = os.path.dirname ( os.path.dirname ( os.path.abspath ( __file__ ) ) )
 sys.path.append ( BASE_DIR )
 from Blog_Statistics.Post_Table import run_api
 from Site_Analytics.baidu.baidu import baidu_get_token, baidu_refresh_token, get_hot_article, \
     get_visitor_province, get_visitor_counrty
+from Site_Analytics.baidu.run import getToken
 from Blog_Statistics.Spider_Post import by_parsel_replace, csdn
 from Fork_Repo.github_calendar_api import get_calendar
 from Fork_Repo.weibo_api import get_weibo
@@ -18,6 +20,14 @@ from Fork_Repo.weibo_api import get_weibo
 # from Blog_Statistics.Screen_Shot import save_img
 
 app = FastAPI ()
+
+app.add_middleware (
+    CORSMiddleware,
+    allow_origins=[ "*" ],
+    allow_credentials=False,
+    allow_methods=[ "*" ],
+    allow_headers=[ "*" ],
+)
 
 
 @app.get ( "/", response_class=HTMLResponse, tags=[ "部署成功" ], summary="部署成功" )
@@ -98,24 +108,28 @@ async def get_baidu_refresh(API_Key: str, Secret_Key: str, refresh_token: str):
 
 
 @app.get ( "/get_hot_article", tags=[ "博客信息" ], summary="获取文章访问统计信息" )
-async def get_hot_articles(access_token: str, url: str):
+async def get_hot_articles(url: str, access_token: str = None):
     '''
     获取博客热文统计
     - access_token: 百度分析access_token
     - domain: 博客域名
     - return: 以pv排序返回文章标题、链接、pv、uv、平均时长
     '''
+    if access_token == None:
+        access_token = getToken ()
     return get_hot_article ( access_token, url )
 
 
 @app.get ( "/get_visitor_province", tags=[ "博客信息" ], summary="获取博客访客省份统计" )
-async def get_visitor_provinces(access_token: str, url: str):
+async def get_visitor_provinces(url: str, access_token: str = None):
     '''
     获取访客省份统计
     - access_token: 百度分析access_token
     - domain: 博客域名
     - return: 博客访客省份的UV
     '''
+    if access_token == None:
+        access_token = getToken ()
     return get_visitor_province ( access_token, url )
 
 

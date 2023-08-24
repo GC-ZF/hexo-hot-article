@@ -230,12 +230,23 @@ function sort() {
 
 // 判断是否有接口
 if (typeof(api) == "undefined" || api == null || api == '') {
-	var article_api = `https://hexo-hot-article.zhsher.cn/get_hot_article?access_token=${token}&url=${url}`
-	var chinamap_api = `https://hexo-hot-article.zhsher.cn/get_visitor_province?access_token=${token}&url=${url}`
+	if (typeof(token) == "undefined" || token == null || token == '') {
+		var article_api = `https://hexo-hot-article.zhsher.cn/get_hot_article?url=${url}`
+		var chinamap_api = `https://hexo-hot-article.zhsher.cn/get_visitor_province?url=${url}`
+	} else {
+		var article_api = `https://hexo-hot-article.zhsher.cn/get_hot_article?access_token=${token}&url=${url}`
+		var chinamap_api = `https://hexo-hot-article.zhsher.cn/get_visitor_province?access_token=${token}&url=${url}`
+	}
 } else {
-	var article_api = `${api}get_hot_article?access_token=${token}&url=${url}`
-	var chinamap_api = `${api}get_visitor_province?access_token=${token}&url=${url}`
+	if (typeof(token) == "undefined" || token == null || token == '') {
+		var article_api = `${api}get_hot_article?url=${url}`
+		var chinamap_api = `${api}get_visitor_province?url=${url}`
+	} else {
+		var article_api = `${api}get_hot_article?access_token=${token}&url=${url}`
+		var chinamap_api = `${api}get_visitor_province?access_token=${token}&url=${url}`
+	}
 }
+
 if (document.querySelectorAll('#hexo-hot-article')[0]) {
 	var c = document.querySelectorAll('#hexo-hot-article')[0]
 	c.innerHTML = `<p>文章在路上啦...</p>`
